@@ -5,7 +5,7 @@ def setup():
 	menuitems = ['Fries', 'Rice', 'Burgers', 'Cheeseburgers', 'Coca-cola', 'Fanta']
 	
 	primes = generatePrime(7919) #generates 1000 primes
-	for index in range(len(menuitems):
+	for index in range(len(menuitems)):
 		menuitems[index] = [menuitems[index],primes[index]]
 
 	pastorders = generateOrders(menuitems, 10, 3)
@@ -23,7 +23,6 @@ def generatePrime(n):
 			primelist.append(index)
 			tindex = index
 			while(tindex < n):
-				print index, tindex
 				intlist[tindex][0] = 0
 				tindex += index
 	return primelist
@@ -53,18 +52,29 @@ def generateOrders(menuitems, numorders, probability):
 	return pastorders
 
 class Node:
-	def __init__(self, orderlist, menuitems, parent, product):
+	def __init__(self, orderlist, menuitems, parent):
         self.orderlist = orderlist
         self.menuitems = menuitems
         self.parent = parent
-        self.successors = {}
+        self.successors = []
         self.frequency = 0
-        self.product = product 
+        self.product = 1
+        for p in menuitems[:,0]:
+        	self.product*=p
+        __createSuccessors()
 
-    #returns -1 if not subset
-    #returns 0 if subset
-    #returns 1 if equal
+    #returns -1 if node not subset
+    #returns 0 if node is subset of this
+    #returns 1 if node is equal to this
     def isSubset(self, node):
+    	if(node.getProduct()==self.product):
+    		return 1
+    	if(self.product%node.getProduct()==0):
+    		return 0
+    	return -1
+
+    #slower version
+    def isSubset2(self, node):
     	for item in node.getOrders():
     		found = False
     		for item2 in self.orderlist:
@@ -85,6 +95,20 @@ class Node:
     def addSuccessor(self, node):
         self.successors.append(node)
 
+    def __createSuccessors(self):
+    	for index in range(menuitems):
+  		  	temporder = list(orderlist)
+  		  	adding = True
+  		  	for item in tempmenu:
+  		  		finding = True
+  		  		for item2 in temporder:
+  		  			if(finding and item==item2)
+  		  				finding = False
+  		  		if(adding and finding):
+  		  			temporder.append(item)
+  		  			adding = False
+  		  	successors.append(Node(temporder,menuitems,self)
+
     def getCost(self):
         return self.cost
 
@@ -93,3 +117,7 @@ class Node:
 
     def incrementFrequency():
     	self.frequency += 1
+
+    def getProduct():
+    	return self.product
+
