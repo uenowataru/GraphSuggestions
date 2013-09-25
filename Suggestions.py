@@ -19,11 +19,31 @@ def setup():
 
 	return root
 
+#creates graph of nodes by using bitshifts! (learned in CS2110 yoyoyo)
 def createGraph(menuitems):
-	root = Node({},menuitems,None)
-	
+	root = Node({},menuitems)
+	nodelist = {root}
+	for num in range(1,2**len(menuitems)):
+		orderlist = {}
+		index = 0
+		product = 1
+		while(i>0):
+			if(num & 1 == 1):
+				orderlist.append(menuitems[index])
+				product *= menuitems[index][1]
+				index+=1
+			num >>= 1
+		nodelist.append(Node(orderlist,product))
+	for node in nodelist:
+		node.createSuccessors(nodelist)
+		
+	return root
+
+
+
 	#creates graph
 
+#generates prime numbers less than or equal to n
 def generatePrime(n):
 	primelist = []
 	intlist = []
