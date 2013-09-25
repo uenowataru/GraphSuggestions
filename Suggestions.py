@@ -1,3 +1,5 @@
+import util
+
 def run():
 	getTopSuggestions(setup())
 
@@ -10,6 +12,8 @@ def setup():
 
 	pastorders = generateOrders(menuitems, 10, 3)
 	root = Node({})
+
+	#call addOrder
 
 	return root
 
@@ -28,7 +32,9 @@ def generatePrime(n):
 	return primelist
 
 def getTopSuggestions(orderlist, root):
-	while(node not order):
+	stack = util.Stack()
+	while(order.isSubset(node)!=1):
+
 		for x in node.getSuccessors():
 			if x is in order:
 				node = x
@@ -39,6 +45,26 @@ def getTopSuggestions(orderlist, root):
 			maxorder = x.getFrequency()
 			order = x
 	return order
+
+def addOrder(orderlist, menuitem, root):
+	visited = set()
+    stack.push(root)
+    ordernode = Node(orderlist, menuitems, None)
+    while (stack.isEmpty()==0):
+        node = stack.pop()
+        subset = ordernode.isSubset(node)
+        if subset==1:
+        	#found the last node to increment
+        if subset==0:
+        	#found subset, increment and keep goign
+        if subset==-1:
+        	#not subset, ignore
+        if node not in visited:
+            visited.add(node)
+            successors = node.getSuccessors()
+            for index in range(0,len(successors)):
+                stack.push(Node(successors[index][0], node, successors[index][1], node.getCost() + successors[index][2]))
+    return 0
 
 #probability: 1/probability chance of individual menu being ordered
 def generateOrders(menuitems, numorders, probability):
@@ -107,7 +133,8 @@ class Node:
   		  		if(adding and finding):
   		  			temporder.append(item)
   		  			adding = False
-  		  	successors.append(Node(temporder,menuitems,self)
+  		  	if(not adding):
+	  		  	successors.append(Node(temporder,menuitems,self)
 
     def getCost(self):
         return self.cost
