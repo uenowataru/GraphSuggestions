@@ -1,4 +1,5 @@
 import util
+import Node
 
 def run():
 	getTopSuggestions(setup())
@@ -10,12 +11,18 @@ def setup():
 	for index in range(len(menuitems)):
 		menuitems[index] = [menuitems[index],primes[index]]
 
+	root = createGraph(menuitems)
 	pastorders = generateOrders(menuitems, 10, 3)
-	root = Node({})
 
-	#call addOrder
+	for order in pastorders:
+		addOrder(order,menuitems,root)
 
 	return root
+
+def createGraph(menuitems):
+	root = Node({},menuitems,None)
+	
+	#creates graph
 
 def generatePrime(n):
 	primelist = []
@@ -49,21 +56,23 @@ def getTopSuggestions(orderlist, root):
 def addOrder(orderlist, menuitem, root):
 	visited = set()
     stack.push(root)
-    ordernode = Node(orderlist, menuitems, None)
     while (stack.isEmpty()==0):
         node = stack.pop()
         subset = ordernode.isSubset(node)
         if subset==1:
-        	#found the last node to increment
-        if subset==0:
-        	#found subset, increment and keep goign
+			#found the last node to increment
+        	node.incrementFrequency()
+        	stack.clear()
         if subset==-1:
         	#not subset, ignore
-        if node not in visited:
-            visited.add(node)
-            successors = node.getSuccessors()
-            for index in range(0,len(successors)):
-                stack.push(Node(successors[index][0], node, successors[index][1], node.getCost() + successors[index][2]))
+        if subset==0:
+        	#found subset, increment and keep goign
+        	node.incrementFrequency()
+        	if node not in visited:
+            	visited.add(node)
+            	successors = node.getSuccessors()
+           	 	for index in range(0,len(successors)):
+               		stack.push(Node(successors[index][0], node, successors[index][1], node.getCost() + successors[index][2]))
     return 0
 
 #probability: 1/probability chance of individual menu being ordered
@@ -79,4 +88,3 @@ def generateOrders(menuitems, numorders, probability):
 
 
 
-	
