@@ -5,11 +5,10 @@ import random
 def run():
 	#create menu
 	menu = ['Fries', 'Rice', 'Burgers', 'Cheeseburgers', 'Coca-cola', 'Fanta']
-	#menu = ['Fries', 'Rice', 'Burgers']
-
 	order = ['Fries', 'Rice']
+
 	#initialize and obtain root of graph
-	root = setup(menu)
+	root = setup(menu)[0]
 
 	print getTopSuggestions(order, menu, root).getOrderList()
 
@@ -26,9 +25,8 @@ def setup(menu):
 	#for node in nodelist:
 		#print node.getOrderList(), node.getFrequency()
 
-	return nodelist[0]
+	return nodelist
 
-#working
 #creates graph of nodes by using bitshifts! (learned in CS2110 yoyoyo)
 def createGraph(menuitems):
 	#root = Node.Node([],menuitems)
@@ -84,7 +82,6 @@ def addOrder(orderlist, menuitems, nodelist):
 			node.incrementFrequency()
 
 
-#working
 #probability: 1/probability chance of individual item in menuitems being ordered
 def generateOrders(menuitems, numorders, probability):
 	pastorders = []
@@ -97,17 +94,15 @@ def generateOrders(menuitems, numorders, probability):
 	#print pastorders
 	return pastorders
 
-#working
 def setMenuItems(menu):
 	menuitems = list(menu)
 	#create prime numbers to use
-	primes = generatePrime(7919) #generates 1000 primes
+	primes = generatePrime(7920) #generates 1000 primes
 	for index in range(len(menu)):
 		menuitems[index] = [menu[index],primes[index]]
 	return menuitems
 
-#working
-#generates prime numbers less than or equal to n
+#generates prime numbers less than n
 def generatePrime(n):
 	primelist = []
 	intlist = []
