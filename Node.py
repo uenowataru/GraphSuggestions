@@ -1,5 +1,5 @@
 class Node:
-	def __init__(self, orderlist, menuitems):
+    def __init__(self, orderlist, menuitems):
         self.orderlist = orderlist
         self.menuitems = menuitems
         #self.parent = parent
@@ -43,20 +43,10 @@ class Node:
         self.successors.append(node)
 
     def createSuccessors(self, nodelist):
-    	for index in range(menuitems):
-  		  	temporder = list(orderlist)
-  		  	adding = True
-  		  	for item in tempmenu:
-  		  		finding = True
-  		  		for item2 in temporder:
-  		  			if(finding and item==item2)
-  		  				finding = False
-  		  		if(adding and finding):
-  		  			temporder.append(item)
-  		  			adding = False
-  		  	if(not adding):
-	  		  	successors.append(Node(temporder,menuitems,self)
-        return successors
+        for index in range(menuitems):
+            for node in nodelist:
+                if(menuitems[index][1]*product==node.getProduct()):
+                    self.successors.append(node)
 
     def setSuccessors(self, successors):
         self.successors = successors

@@ -5,18 +5,19 @@ def run():
 	getTopSuggestions(setup())
 
 def setup():
+	#create menu
 	menuitems = ['Fries', 'Rice', 'Burgers', 'Cheeseburgers', 'Coca-cola', 'Fanta']
-	
+	#create prime numbers to use
 	primes = generatePrime(7919) #generates 1000 primes
 	for index in range(len(menuitems)):
 		menuitems[index] = [menuitems[index],primes[index]]
-
+	#create graph of possible orders
 	root = createGraph(menuitems)
+	#randomly generate pastorders for database
 	pastorders = generateOrders(menuitems, 10, 3)
-
+	#add to the graph
 	for order in pastorders:
 		addOrder(order,menuitems,root)
-
 	return root
 
 #creates graph of nodes by using bitshifts! (learned in CS2110 yoyoyo)
@@ -33,35 +34,14 @@ def createGraph(menuitems):
 				product *= menuitems[index][1]
 				index+=1
 			num >>= 1
-		nodelist.append(Node(orderlist,product))
+		nodelist.append(Node(orderlist,menuitems))
 	for node in nodelist:
 		node.createSuccessors(nodelist)
-		
 	return root
-
-
-
-	#creates graph
-
-#generates prime numbers less than or equal to n
-def generatePrime(n):
-	primelist = []
-	intlist = []
-	for num in range(0,n):
-		intlist.append([1,num])
-	for index in range(2,n):
-		if(intlist[index][0]==1):
-			primelist.append(index)
-			tindex = index
-			while(tindex < n):
-				intlist[tindex][0] = 0
-				tindex += index
-	return primelist
 
 def getTopSuggestions(orderlist, root):
 	stack = util.Stack()
 	while(order.isSubset(node)!=1):
-
 		for x in node.getSuccessors():
 			if x is in order:
 				node = x
@@ -92,7 +72,7 @@ def addOrder(orderlist, menuitem, root):
             	visited.add(node)
             	successors = node.getSuccessors()
            	 	for index in range(0,len(successors)):
-               		stack.push(Node(successors[index][0], node, successors[index][1], node.getCost() + successors[index][2]))
+               		stack.push(Node())
     return 0
 
 #probability: 1/probability chance of individual menu being ordered
@@ -106,5 +86,18 @@ def generateOrders(menuitems, numorders, probability):
 		pastorders.append(temporder)
 	return pastorders
 
-
-
+#generates prime numbers less than or equal to n
+def generatePrime(n):
+	primelist = []
+	intlist = []
+	for num in range(0,n):
+		intlist.append([1,num])
+	for index in range(2,n):
+		if(intlist[index][0]==1):
+			primelist.append(index)
+			tindex = index
+			while(tindex < n):
+				intlist[tindex][0] = 0
+				tindex += index
+	return primelist
+	
