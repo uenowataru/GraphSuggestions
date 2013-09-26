@@ -59,7 +59,7 @@ def getTopSuggestions(orderlist, menu, root):
 	while(not stack.isEmpty()):
 		node = stack.pop()
 		if(node.getProduct()==order.getProduct()):
-			maxorder = 0
+			maxorder = -1
 			order = None
 			for x in node.getSuccessors():
 				if(maxorder < x.getFrequency()):
