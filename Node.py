@@ -2,13 +2,9 @@ class Node:
     def __init__(self, orderlist, menuitems):
         self.orderlist = orderlist
         self.menuitems = menuitems
-        #self.parent = parent
         self.successors = []
         self.frequency = 0
-        self.product = 1
-        for p in menuitems[:,0]:
-        	self.product*=p
-        #createSuccessors()
+        self.product = self.createProduct()
 
     #returns -1 if node not subset
     #returns 0 if node is subset of this
@@ -35,6 +31,13 @@ class Node:
 
     #def getParent(self):
     	#return self.parent
+    def createProduct(self):
+        product = 1
+        for item in self.orderlist:
+            for item2 in self.menuitems:
+                if(item==item2[0]):
+                    product*=item2[1]
+        return product
 
     def getSuccessors(self):
         return self.successors
@@ -43,23 +46,20 @@ class Node:
         self.successors.append(node)
 
     def createSuccessors(self, nodelist):
-        for index in range(menuitems):
+        for index in range(len(self.menuitems)):
             for node in nodelist:
-                if(menuitems[index][1]*product==node.getProduct()):
+                if(self.menuitems[index][1]*self.product==node.getProduct()):
                     self.successors.append(node)
 
     def setSuccessors(self, successors):
         self.successors = successors
 
-    def getCost(self):
-        return self.cost
-
-    def getFrequency():
+    def getFrequency(self):
     	return self.frequency
 
-    def incrementFrequency():
+    def incrementFrequency(self):
     	self.frequency += 1
 
-    def getProduct():
+    def getProduct(self):
     	return self.product
 

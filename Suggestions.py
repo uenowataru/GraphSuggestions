@@ -1,90 +1,99 @@
-import util
 import Node
+import Stack
+import random
 
 def run():
-	getTopSuggestions(setup())
-
-def setup():
 	#create menu
-	menuitems = ['Fries', 'Rice', 'Burgers', 'Cheeseburgers', 'Coca-cola', 'Fanta']
-	#create prime numbers to use
-	primes = generatePrime(7919) #generates 1000 primes
-	for index in range(len(menuitems)):
-		menuitems[index] = [menuitems[index],primes[index]]
+	menu = ['Fries', 'Rice', 'Burgers', 'Cheeseburgers', 'Coca-cola', 'Fanta']
+	order = ['Fries', 'Rice']
+	#initialize and obtain root of graph
+	root = setup(menu)
+
+	getTopSuggestions(order, menu, root)
+
+def setup(menu):
+	#creates item-prime pair
+	menuitems = setMenuItems(menu)
 	#create graph of possible orders
-	root = createGraph(menuitems)
+	nodelist = createGraph(menuitems)
 	#randomly generate pastorders for database
 	pastorders = generateOrders(menuitems, 10, 3)
 	#add to the graph
-	for order in pastorders:
-		addOrder(order,menuitems,root)
-	return root
+	addOrders(pastorders, menuitems, nodelist)
+
+	return nodelist[0]
 
 #creates graph of nodes by using bitshifts! (learned in CS2110 yoyoyo)
 def createGraph(menuitems):
-	root = Node({},menuitems)
-	nodelist = {root}
-	for num in range(1,2**len(menuitems)):
-		orderlist = {}
+	root = Node.Node([],menuitems)
+	nodelist = [root]
+	for num2n in range(1,2**len(menuitems)):
+		orderlist = []
 		index = 0
 		product = 1
-		while(i>0):
+		num = num2n
+		while(num>0):
 			if(num & 1 == 1):
 				orderlist.append(menuitems[index])
 				product *= menuitems[index][1]
 				index+=1
 			num >>= 1
-		nodelist.append(Node(orderlist,menuitems))
+		nodelist.append(Node.Node(orderlist,menuitems))
 	for node in nodelist:
 		node.createSuccessors(nodelist)
-	return root
+	return nodelist
 
-def getTopSuggestions(orderlist, root):
-	stack = util.Stack()
-	while(order.isSubset(node)!=1):
-		for x in node.getSuccessors():
-			if x is in order:
-				node = x
-	maxorder = 0
-	order = None
-	for x in node.getSuccessors():
-		if(maxorder < x.getFrequency()):
-			maxorder = x.getFrequency()
-			order = x
-	return order
+def getTopSuggestions(orderlist, menu, root):
+	#create order node
+	order = Node.Node(orderlist, setMenuItems(menu))
 
-def addOrder(orderlist, menuitem, root):
-	visited = set()
-    stack.push(root)
-    while (stack.isEmpty()==0):
-        node = stack.pop()
-        subset = ordernode.isSubset(node)
-        if subset==1:
-			#found the last node to increment
-        	node.incrementFrequency()
-        	stack.clear()
-        if subset==-1:
-        	#not subset, ignore
-        if subset==0:
-        	#found subset, increment and keep goign
-        	node.incrementFrequency()
-        	if node not in visited:
-            	visited.add(node)
-            	successors = node.getSuccessors()
-           	 	for index in range(0,len(successors)):
-               		stack.push(Node())
-    return 0
+	#pseudo-dfs (might be faster using the nodelist and using prime numbers, but this works for now)
+	stack = Stack.Stack()
+	stack.push(root)
+	while(not stack.isEmpty()):
+		node = stack.pop()
+		if(node.getProduct()==order.getProduct()):
+			maxorder = 0
+			order = None
+			for x in node.getSuccessors():
+				if(maxorder < x.getFrequency()):
+					maxorder = x.getFrequency()
+					order = x
+			return order
+		else:
+			for nextnode in node.getSuccessors():
+				stack.push(nextnode)
 
-#probability: 1/probability chance of individual menu being ordered
+	
+
+def addOrders(pastorders, menuitems, nodelist):
+	for order in pastorders:
+		addOrder(order, menuitems, nodelist)
+
+def addOrder(orderlist, menuitems, nodelist):
+	order = Node.Node(orderlist, menuitems)
+	for node in nodelist:
+		if(order.getProduct()%node.getProduct()==0):
+			node.incrementFrequency()
+
+#probability: 1/probability chance of individual item in menuitems being ordered
 def generateOrders(menuitems, numorders, probability):
-	pastorders = {}
+	pastorders = []
 	for orderindex in range(numorders):
-		temporder = {}
-		for menuindex in range(menuitems):
+		temporder = []
+		for menuindex in range(len(menuitems)):
 			if random.randint(0,probability-1)<1:
 				temporder.append(menuitems[menuindex])
 		pastorders.append(temporder)
 	return pastorders
+
+def setMenuItems(menu):
+	menuitems = list(menu)
+	#create prime numbers to use
+	primes = generatePrime(7919) #generates 1000 primes
+	for index in range(len(menu)):
+		menuitems[index] = [menu[index],primes[index]]
+	return menuitems
 
 #generates prime numbers less than or equal to n
 def generatePrime(n):
@@ -100,4 +109,7 @@ def generatePrime(n):
 				intlist[tindex][0] = 0
 				tindex += index
 	return primelist
-	
+
+if __name__ == "__main__":
+	print 'Runnning with default setting..'
+	run()
