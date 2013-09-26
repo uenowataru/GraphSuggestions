@@ -5,11 +5,13 @@ import random
 def run():
 	#create menu
 	menu = ['Fries', 'Rice', 'Burgers', 'Cheeseburgers', 'Coca-cola', 'Fanta']
+	#menu = ['Fries', 'Rice', 'Burgers']
+
 	order = ['Fries', 'Rice']
 	#initialize and obtain root of graph
 	root = setup(menu)
 
-	getTopSuggestions(order, menu, root)
+	print getTopSuggestions(order, menu, root).getOrderList()
 
 def setup(menu):
 	#creates item-prime pair
@@ -21,22 +23,26 @@ def setup(menu):
 	#add to the graph
 	addOrders(pastorders, menuitems, nodelist)
 
+	#for node in nodelist:
+		#print node.getOrderList(), node.getFrequency()
+
 	return nodelist[0]
 
+#working
 #creates graph of nodes by using bitshifts! (learned in CS2110 yoyoyo)
 def createGraph(menuitems):
-	root = Node.Node([],menuitems)
-	nodelist = [root]
-	for num2n in range(1,2**len(menuitems)):
+	#root = Node.Node([],menuitems)
+	nodelist = []
+	for num2n in range(0,2**len(menuitems)):
 		orderlist = []
 		index = 0
 		product = 1
 		num = num2n
 		while(num>0):
-			if(num & 1 == 1):
-				orderlist.append(menuitems[index])
+			if((num & 1) == 1):
+				orderlist.append(menuitems[index][0])
 				product *= menuitems[index][1]
-				index+=1
+			index+=1
 			num >>= 1
 		nodelist.append(Node.Node(orderlist,menuitems))
 	for node in nodelist:
@@ -74,8 +80,11 @@ def addOrder(orderlist, menuitems, nodelist):
 	order = Node.Node(orderlist, menuitems)
 	for node in nodelist:
 		if(order.getProduct()%node.getProduct()==0):
+			#print order.getProduct()%node.getProduct(), order.getProduct(), node.getProduct()
 			node.incrementFrequency()
 
+
+#working
 #probability: 1/probability chance of individual item in menuitems being ordered
 def generateOrders(menuitems, numorders, probability):
 	pastorders = []
@@ -83,10 +92,12 @@ def generateOrders(menuitems, numorders, probability):
 		temporder = []
 		for menuindex in range(len(menuitems)):
 			if random.randint(0,probability-1)<1:
-				temporder.append(menuitems[menuindex])
+				temporder.append(menuitems[menuindex][0])
 		pastorders.append(temporder)
+	#print pastorders
 	return pastorders
 
+#working
 def setMenuItems(menu):
 	menuitems = list(menu)
 	#create prime numbers to use
@@ -95,6 +106,7 @@ def setMenuItems(menu):
 		menuitems[index] = [menu[index],primes[index]]
 	return menuitems
 
+#working
 #generates prime numbers less than or equal to n
 def generatePrime(n):
 	primelist = []

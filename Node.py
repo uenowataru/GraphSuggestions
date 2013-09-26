@@ -35,6 +35,7 @@ class Node:
         product = 1
         for item in self.orderlist:
             for item2 in self.menuitems:
+                #print item, item2[0]
                 if(item==item2[0]):
                     product*=item2[1]
         return product
@@ -62,4 +63,7 @@ class Node:
 
     def getProduct(self):
     	return self.product
+
+    def getOrderList(self):
+        return self.orderlist
 
