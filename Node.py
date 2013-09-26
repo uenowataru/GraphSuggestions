@@ -1,3 +1,4 @@
+#node class that represents each cart.
 class Node:
     def __init__(self, orderlist, menuitems):
         self.orderlist = orderlist
@@ -29,8 +30,6 @@ class Node:
     		return 1
     	return 0
 
-    #def getParent(self):
-    	#return self.parent
     def createProduct(self):
         product = 1
         for item in self.orderlist:

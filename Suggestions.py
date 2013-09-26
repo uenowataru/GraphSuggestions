@@ -68,8 +68,6 @@ def getTopSuggestions(orderlist, menu, root):
 			for nextnode in node.getSuccessors():
 				stack.push(nextnode)
 
-	
-
 def addOrders(pastorders, menuitems, nodelist):
 	for order in pastorders:
 		addOrder(order, menuitems, nodelist)
