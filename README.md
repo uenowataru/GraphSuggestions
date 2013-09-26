@@ -1,8 +1,10 @@
 GraphSuggestions
 ================
 
-Suggestion feature backed by a graph. 
+This will be a small part of python implementation for the backend server that will return suggestion given the domain and current order.
 
-This will be a small part of python implementation for the backend server that will return top suggestion given the domain and frequencies.
+Suggestion feature backed by a graph. A lot of optimization using prime numbers, modulus, and bitshifts! 
+Possibly might get rid of the DFS part if algorithm inefficient and stick with prime numbers search.
 
-Most likely write in pseudocode for the most part until other necessary parts are implemented.
+##########
+There are still bugs and needs to be fixed..
